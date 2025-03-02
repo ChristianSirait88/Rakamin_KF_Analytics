@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `dataset_kf.tabel_analisa` AS
+CREATE OR REPLACE TABLE `kimia_farma.tabel_analisa` AS
 SELECT 
     t.transaction_id,
     t.date,
@@ -30,10 +30,10 @@ SELECT
         WHEN t.price > 500000 THEN 0.3
     END AS net_profit
 FROM 
-    (SELECT DISTINCT * FROM `dataset_kf.kf_final_transaction`) t
+    (SELECT DISTINCT * FROM `kimia_farma.kf_final_transaction`) t
 inner join
-    (SELECT DISTINCT branch_id, branch_name, kota, provinsi, rating FROM `dataset_kf.kf_kantor_cabang`) kc 
+    (SELECT DISTINCT branch_id, branch_name, kota, provinsi, rating FROM `kimia_farma.kf_kantor_cabang`) kc 
     ON t.branch_id = kc.branch_id
 inner join
-    (SELECT DISTINCT product_id, product_name FROM `dataset_kf.kf_inventory`) i 
+    (SELECT DISTINCT product_id, product_name FROM `kimia_farma.kf_inventory`) i 
     ON t.product_id = i.product_id
