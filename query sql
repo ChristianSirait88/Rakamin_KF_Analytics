@@ -1,9 +1,9 @@
-CREATE OR REPLACE TABLE `kimia_farma.tabel_analisa` AS
-SELECT 
+CREATE OR REPLACE TABLE `kimia_farma.tabel_analisa` AS #Membuat atau mengganti table
+SELECT # memilih tabel sesuai syarat
     t.transaction_id,
     t.date,
     t.branch_id,
-    t.customer_name,
+    t.customer_name, 
     t.product_id,
     t.price AS actual_price,
     t.discount_percentage,
@@ -13,7 +13,7 @@ SELECT
     kc.provinsi,
     kc.rating AS rating_cabang,
     i.product_name,
-    CASE
+    CASE # memasukan laba
         WHEN t.price <= 50000 THEN 0.1
         WHEN t.price > 50000 AND t.price <= 100000 THEN 0.15
         WHEN t.price > 100000 AND t.price <= 300000 THEN 0.2
@@ -28,12 +28,12 @@ SELECT
         WHEN t.price > 100000 AND t.price <= 300000 THEN 0.2
         WHEN t.price > 300000 AND t.price <= 500000 THEN 0.25
         WHEN t.price > 500000 THEN 0.3
-    END AS net_profit
+    END AS net_profit # menghitung keuntungan
 FROM 
     (SELECT DISTINCT * FROM `kimia_farma.kf_final_transaction`) t
 inner join
     (SELECT DISTINCT branch_id, branch_name, kota, provinsi, rating FROM `kimia_farma.kf_kantor_cabang`) kc 
-    ON t.branch_id = kc.branch_id
+    ON t.branch_id = kc.branch_id # Penggabungan tabel
 inner join
     (SELECT DISTINCT product_id, product_name FROM `kimia_farma.kf_inventory`) i 
-    ON t.product_id = i.product_id
+    ON t.product_id = i.product_id # Penggabungan tabel
